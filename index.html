@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Ontslagvergoeding Calculator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        width: 350px;
+    }
+
+    h1 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-top: 10px;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        margin-top: 20px;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background: #0077cc;
+        color: white;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #005fa3;
+    }
+
+    .result {
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Bereken uw ontslagvergoeding</h1>
+
+    <label>Maandsalaris (€)</label>
+    <input type="number" id="salary">
+
+    <label>Aantal dienstjaren</label>
+    <input type="number" id="years">
+
+    <label>Leeftijd</label>
+    <input type="number" id="age">
+
+    <button onclick="bereken()">Berekenen</button>
+
+    <div class="result" id="resultaat"></div>
+</div>
+
+<script>
+function bereken() {
+    document.getElementById("resultaat").innerText = "Uw ontslagvergoeding: €0";
+}
+</script>
+
+</body>
+</html>
