@@ -2,31 +2,50 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<title>Ontslagvergoeding Calculator</title>
+<title>HR Compensation Calculator</title>
 
 <style>
 
 body{
 font-family:"Segoe UI",Arial,sans-serif;
 background:linear-gradient(135deg,#e9eef6,#d8e1f0);
+margin:0;
 height:100vh;
 display:flex;
 align-items:center;
 justify-content:center;
-margin:0;
 }
 
 .card{
+width:520px;
 background:white;
-width:460px;
 padding:35px;
 border-radius:12px;
 box-shadow:0 15px 40px rgba(0,0,0,0.15);
 }
 
+.header{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:15px;
+}
+
+.logo{
+width:38px;
+height:38px;
+background:#2a6df4;
+border-radius:8px;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-weight:bold;
+}
+
 h1{
-margin-top:0;
 font-size:22px;
+margin:0;
 }
 
 .subtitle{
@@ -47,17 +66,16 @@ margin-top:6px;
 margin-bottom:16px;
 border-radius:6px;
 border:1px solid #ccc;
-font-size:14px;
 }
 
 button{
 width:100%;
 padding:12px;
-border:none;
 background:#2a6df4;
 color:white;
-font-size:16px;
+border:none;
 border-radius:6px;
+font-size:16px;
 cursor:pointer;
 }
 
@@ -66,13 +84,13 @@ background:#1f55c4;
 }
 
 .progress-container{
-margin-top:20px;
 display:none;
+margin-top:20px;
 }
 
 .progress-bar{
 height:10px;
-background:#e5e5e5;
+background:#e6e6e6;
 border-radius:10px;
 overflow:hidden;
 }
@@ -81,32 +99,46 @@ overflow:hidden;
 height:100%;
 width:0%;
 background:#2a6df4;
-transition:width 0.5s;
+transition:width .6s;
 }
 
 .status{
-font-size:13px;
 margin-top:10px;
+font-size:13px;
 color:#555;
 }
 
+.chart{
+height:120px;
+background:linear-gradient(to top,#2a6df4 0%,#2a6df4 5%,transparent 5%);
+border-radius:6px;
+margin-top:20px;
+display:none;
+}
+
 .result{
-margin-top:25px;
+margin-top:20px;
 padding:18px;
-border-radius:8px;
 background:#f3f6fb;
+border-radius:8px;
 text-align:center;
 display:none;
 }
 
 .amount{
-font-size:30px;
+font-size:32px;
 font-weight:bold;
-margin-top:8px;
+margin-top:6px;
+}
+
+.details{
+font-size:13px;
+color:#555;
+margin-top:10px;
 }
 
 .footer{
-margin-top:18px;
+margin-top:20px;
 font-size:11px;
 color:#888;
 text-align:center;
@@ -119,17 +151,23 @@ text-align:center;
 
 <div class="card">
 
-<h1>Ontslagvergoeding Calculator</h1>
-<div class="subtitle">Bereken een indicatie van uw wettelijke ontslagvergoeding.</div>
+<div class="header">
+<div class="logo">HR</div>
+<h1>Compensation Calculator</h1>
+</div>
+
+<div class="subtitle">
+Bereken een indicatie van uw wettelijke ontslagvergoeding.
+</div>
 
 <label>Bruto maandsalaris (€)</label>
-<input type="number" id="salary">
+<input type="number">
 
 <label>Aantal dienstjaren</label>
-<input type="number" id="years">
+<input type="number">
 
 <label>Leeftijd</label>
-<input type="number" id="age">
+<input type="number">
 
 <label>Type contract</label>
 <select>
@@ -138,9 +176,9 @@ text-align:center;
 <option>Proeftijd</option>
 </select>
 
-<button onclick="startBerekening()">Bereken ontslagvergoeding</button>
+<button onclick="start()">Start berekening</button>
 
-<div class="progress-container" id="progressContainer">
+<div class="progress-container" id="progressBox">
 
 <div class="progress-bar">
 <div class="progress" id="progress"></div>
@@ -152,11 +190,17 @@ Analyse starten...
 
 </div>
 
+<div class="chart" id="chart"></div>
+
 <div class="result" id="result">
 
 Geschatte ontslagvergoeding
 
 <div class="amount">€0</div>
+
+<div class="details">
+Analyse voltooid • Wettelijke vergoeding berekend
+</div>
 
 </div>
 
@@ -168,48 +212,56 @@ Indicatieve berekening – hier kunnen geen rechten aan worden ontleend.
 
 <script>
 
-const stappen = [
+const stappen=[
 "Arbeidscontract analyseren...",
 "Dienstjaren berekenen...",
-"Salariscomponenten verwerken...",
+"Salarisstructuur analyseren...",
 "Wettelijke transitievergoeding berekenen...",
-"Regionale regelgeving controleren...",
+"Sectorregeling controleren...",
+"Belastingcomponent simuleren...",
 "Resultaat genereren..."
 ];
 
-let stap = 0;
+let stap=0;
 
-function startBerekening(){
+function start(){
 
-document.getElementById("progressContainer").style.display="block";
+document.getElementById("progressBox").style.display="block";
 document.getElementById("result").style.display="none";
+document.getElementById("chart").style.display="none";
 
-stap = 0;
+stap=0;
 
-updateStap();
+nextStep();
 
 }
 
-function updateStap(){
+function nextStep(){
 
-let progress = document.getElementById("progress");
-let status = document.getElementById("status");
+let progress=document.getElementById("progress");
+let status=document.getElementById("status");
 
-status.innerText = stappen[stap];
+status.innerText=stappen[stap];
 
-progress.style.width = ((stap+1)/stappen.length*100)+"%";
+progress.style.width=((stap+1)/stappen.length*100)+"%";
 
 stap++;
 
-if(stap < stappen.length){
+if(stap<stappen.length){
 
-setTimeout(updateStap,900);
+setTimeout(nextStep,900);
 
 }else{
 
 setTimeout(function(){
 
+document.getElementById("chart").style.display="block";
+
+setTimeout(function(){
+
 document.getElementById("result").style.display="block";
+
+},1000);
 
 },800);
 
